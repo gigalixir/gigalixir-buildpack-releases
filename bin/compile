@@ -109,6 +109,12 @@ if [ ${#DIRS[@]} -ne 1 ]; then
 fi
 VERSION=`echo $DIRS | cut -d '/' -f 6`
 
+# copy over envvar setup for phoenix
+if [ -f .profile.d/phoenix_static_buildpack_env.sh ]; then
+  mkdir -p _build/${RELEASE_ENV}/rel/$APP/.profile.d
+  cp .profile.d/phoenix_static_buildpack_env.sh _build/${RELEASE_ENV}/rel/$APP/.profile.d/
+fi
+
 # create tarball
 mkdir -p $cache_dir/out
 rm -f $cache_dir/out/*
