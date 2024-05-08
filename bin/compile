@@ -14,7 +14,7 @@ mkdir -p $1 $2 $3 # Ensure dirs are present
 build_dir=$(cd $1 && pwd)
 cache_dir=$(cd $2 && pwd)
 env_path=$(cd $3 && pwd)
-buildpack_dir=$(cd $(dirname $0) && pwd)
+build_pack_dir=$(cd $(dirname $(dirname $0)); pwd)
 
 source ${build_pack_dir}/lib/build.sh
 
