@@ -1,7 +1,7 @@
 load_config() {
   output_section "Loading config..."
 
-  local builpack_config_file="${buildpack_dir}/releases_buildpack.config"
+  local builpack_config_file="${build_pack_dir}/releases_buildpack.config"
   local custom_config_file="${build_dir}/releases_buildpack.config"
   local legacy_config_file="${build_dir}/distillery_buildpack.config"
   local dynamic_config_file="${cache_dir}/dynamic_releases_buildpack.config"
