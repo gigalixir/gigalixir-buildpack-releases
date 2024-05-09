@@ -1,4 +1,4 @@
-# Intro
+# Elixir Releases Buildpack
 
 Buildpack for gigalixir app's that use Elixir Core releases.
 
@@ -10,4 +10,37 @@ To use this, see https://gigalixir.readthedocs.io/en/latest/modify-app/releases.
 
 
 
+## Features
 
+* Easy configuration with `releases_buildpack.config` file 
+* Easy configuration with `GIGALIXIR_RELEASES_BUILDPACK_CONFIG` environment variable.
+* Support for umbrella app compilation through `app_relative_path` configuration.
+
+
+
+## Configuration
+
+Create a `releases_buildpack.config` file in your app's root dir if you want to override the defaults.
+The file's syntax is bash.
+
+Alternatively add your config to `GIGALIXIR_RELEASES_BUILDPACK_CONFIG`.
+For example:
+```
+gigalixir config:set GIGALIXIR_RELEASES_BUILDPACK_CONFIG='app_relative_path="./apps/my_umbrella"'
+```
+
+If you don't specify a configuration, then the defaults are loaded from the buildpack's
+[`releases_buildpack.config`](/releases_buildpack.config) file.
+
+Configuration options are applied in the following order:
+1. [buildpack defaults](/releases_buildpack.config)
+2. `distillery_buildpack.config` from your repo (for backwards compatibility)
+3. `releases_buildpack.config` from your repo
+4. `GIGALIXIR_RELEASES_BUILDPACK_CONFIG` environment variable
+
+
+
+## Tests
+
+Tests are available in the [test](test) directory.
+To run all tests, use `for tst in test/*; do $tst; done`.

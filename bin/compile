@@ -14,69 +14,9 @@ mkdir -p $1 $2 $3 # Ensure dirs are present
 build_dir=$(cd $1 && pwd)
 cache_dir=$(cd $2 && pwd)
 env_path=$(cd $3 && pwd)
-app_relative_path="." # default
+build_pack_dir=$(cd $(dirname $(dirname $0)); pwd)
 
-# "return" value is basically just $app_relative_path. not returned, just set as env var.
-function load_config() {
-  output_section "Loading config..."
-
-  local custom_config_file="${build_dir}/distillery_buildpack.config"
-
-  if [ -f $custom_config_file ];
-  then
-    source $custom_config_file
-  fi
-
-  output_line "* app relative path $app_relative_path"
-}
-
-# copied from HashNuke/HashNuke/heroku-buildpack-elixir
-function export_env_vars() {
-  whitelist_regex=${2:-''}
-  blacklist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
-  if [ -d "$env_path" ]; then
-    output_section "Will export the following config vars:"
-    for e in $(ls $env_path); do
-      echo "$e" | grep -E "$whitelist_regex" | grep -vE "$blacklist_regex" &&
-      export "$e=$(cat $env_path/$e)"
-      :
-    done
-  fi
-}
-
-function export_mix_env() {
-  if [ -z "$MIX_ENV" ]; then
-    if [ -d $env_path ] && [ -f $env_path/MIX_ENV ]; then
-      export MIX_ENV=$(cat $env_path/MIX_ENV)
-    else
-      export MIX_ENV=${1:-prod}
-    fi
-  fi
-
-  output_line "* MIX_ENV=${MIX_ENV}"
-}
-
-function distillery_mix_release_command() {
-  set +o errexit    # do not exit if there is an error
-  mix help distillery.release >/dev/null 2>&1
-  if [ $? -eq 0 ]; then
-    echo "distillery.release"
-  else
-    echo "release"
-  fi
-  set -o errexit    # always exit on error
-}
-
-function output_line() {
-  local spacing="      "
-  echo "${spacing} $1"
-}
-
-function output_section() {
-  local indentation="----->"
-  echo "${indentation} $1"
-}
-# end copy
+source ${build_pack_dir}/lib/build.sh
 
 load_config
 export_env_vars
@@ -108,6 +48,12 @@ if [ ${#DIRS[@]} -ne 1 ]; then
   exit 1;
 fi
 VERSION=`echo $DIRS | cut -d '/' -f 6`
+
+# copy over envvar setup for phoenix
+if [ -f .profile.d/phoenix_static_buildpack_env.sh ]; then
+  mkdir -p _build/${RELEASE_ENV}/rel/$APP/.profile.d
+  cp .profile.d/phoenix_static_buildpack_env.sh _build/${RELEASE_ENV}/rel/$APP/.profile.d/
+fi
 
 # create tarball
 mkdir -p $cache_dir/out
