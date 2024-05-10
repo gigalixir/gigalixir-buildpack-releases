@@ -49,9 +49,16 @@ if [ ${#DIRS[@]} -ne 1 ]; then
 fi
 VERSION=`echo $DIRS | cut -d '/' -f 6`
 
+mkdir -p _build/${RELEASE_ENV}/rel/$APP/.profile.d
+
+# heroku-buildpack-apt support
+if [ -d $build_dir/.apt ] && [ -f $build_dir/.profile.d/000_apt.sh ]; then
+  cp -r $build_dir/.apt _build/${RELEASE_ENV}/rel/$APP/.apt
+  cp $build_dir/.profile.d/000_apt.sh _build/${RELEASE_ENV}/rel/$APP/.profile.d/000_apt.sh
+fi
+
 # copy over envvar setup for phoenix
 if [ -f .profile.d/phoenix_static_buildpack_env.sh ]; then
-  mkdir -p _build/${RELEASE_ENV}/rel/$APP/.profile.d
   cp .profile.d/phoenix_static_buildpack_env.sh _build/${RELEASE_ENV}/rel/$APP/.profile.d/
 fi
 
