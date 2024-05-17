@@ -24,6 +24,7 @@ buildpack_dir=$(cd $(dirname $0)/.. && pwd)
 assets_dir=${TEST_DIR}/assets_dir
 build_dir=${TEST_DIR}/build_dir
 cache_dir=${TEST_DIR}/cache_dir
+build_pack_dir=${ROOT_DIR}
 mkdir -p ${assets_dir} ${build_dir} ${cache_dir}
 
 
