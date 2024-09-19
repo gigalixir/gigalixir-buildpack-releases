@@ -66,7 +66,7 @@ fi
 mkdir -p $cache_dir/out
 rm -f $cache_dir/out/*
 TARBALL="$cache_dir/out/$APP-$VERSION.tar.gz"
-tar zcf $TARBALL --dereference -C _build/${RELEASE_ENV}/rel/$APP/ .
+tar zcf $TARBALL --dereference --exclude='*.apt/usr/share/doc/*' -C _build/${RELEASE_ENV}/rel/$APP/ .
 
 # so it can be deleted outside of container
 chmod +w $cache_dir/out/$APP-$VERSION.tar.gz
