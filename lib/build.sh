@@ -72,3 +72,7 @@ output_section() {
   local indentation="----->"
   echo "${indentation} $1"
 }
+
+delete_broken_symlinks() {
+  find "$1" -xtype l -delete > /dev/null
+}
