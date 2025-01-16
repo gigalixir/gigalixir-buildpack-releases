@@ -76,3 +76,15 @@ output_section() {
 delete_broken_symlinks() {
   find "$1" -xtype l -delete > /dev/null
 }
+
+copy_static_files() {
+  local static_dir="$1"
+  local destination_dir="$2"
+
+  if [ -d "$static_dir" ]; then
+    output_section "Copying static files from ${static_dir}/ to ${destination_dir}/"
+
+    mkdir -p "${destination_dir}"
+    rsync -a "${static_dir}/" "${destination_dir}/"
+  fi
+}

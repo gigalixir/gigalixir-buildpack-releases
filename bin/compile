@@ -67,6 +67,8 @@ if [ -f "${build_dir}/clamd.conf" ]; then
   cp "${build_dir}/clamd.conf" "_build/${RELEASE_ENV}/rel/${APP}/"
 fi
 
+copy_static_files .gigalixir/static "_build/${RELEASE_ENV}/rel/${APP}/"
+
 # create tarball
 mkdir -p $cache_dir/out
 rm -f $cache_dir/out/*
