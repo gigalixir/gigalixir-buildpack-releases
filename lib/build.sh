@@ -76,3 +76,18 @@ output_section() {
 delete_broken_symlinks() {
   find "$1" -xtype l -delete > /dev/null
 }
+
+copy_static_files() {
+  local dst_dir="$1/"
+  local includes_path="${build_dir}/.gigalixir/releases/includes.txt"
+
+  if [ -f "${includes_path}" ]; then
+    output_line ".gigalixir/releases/includes.txt file found"
+    output_section "Copying files to include in the release"
+
+    rsync -av \
+      --include='*/' --include-from="${includes_path}" --exclude='*' \
+      --prune-empty-dirs --ignore-existing \
+      "${build_dir}/" "${dst_dir}"
+  fi
+}
