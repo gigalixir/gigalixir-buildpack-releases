@@ -62,6 +62,11 @@ if [ -f .profile.d/phoenix_static_buildpack_env.sh ]; then
   cp .profile.d/phoenix_static_buildpack_env.sh _build/${RELEASE_ENV}/rel/$APP/.profile.d/
 fi
 
+# temporary fix for clamav setup
+if [ -f "${build_dir}/clamd.conf" ]; then
+  cp "${build_dir}/clamd.conf" "_build/${RELEASE_ENV}/rel/${APP}/"
+fi
+
 # create tarball
 mkdir -p $cache_dir/out
 rm -f $cache_dir/out/*
