@@ -24,7 +24,7 @@ export_mix_env
 
 # what is the default release name? or do we keep it empty?
 RELEASE_ENV=${MIX_ENV}
-DEFAULT_RELEASE_OPTIONS=""
+DEFAULT_RELEASE_OPTIONS="--overwrite"
 RELEASE_OPTIONS=${GIGALIXIR_RELEASE_OPTIONS:-$DEFAULT_RELEASE_OPTIONS}
 
 cd $build_dir/$app_relative_path
