@@ -15,6 +15,7 @@ To use this, see https://gigalixir.readthedocs.io/en/latest/modify-app/releases.
 * Easy configuration with `releases_buildpack.config` file 
 * Easy configuration with `GIGALIXIR_RELEASES_BUILDPACK_CONFIG` environment variable.
 * Support for umbrella app compilation through `app_relative_path` configuration.
+* Support for adding files to the release through `.gigalixir/releases/includes.txt` file.
 
 
 
@@ -37,6 +38,28 @@ Configuration options are applied in the following order:
 2. `distillery_buildpack.config` from your repo (for backwards compatibility)
 3. `releases_buildpack.config` from your repo
 4. `GIGALIXIR_RELEASES_BUILDPACK_CONFIG` environment variable
+
+
+
+## Adding files to the release
+
+To add files to the release, create a `.gigalixir/releases/includes.txt`.
+The file follows the `rsync` --include-from syntax.
+
+For example:
+```
+# include a specific file
+/priv/ssl_certificate.pem
+
+# include all files in a directory
+/priv/dir/*
+
+# include all files in a directory and its subdirectories
+/priv/tree/**
+```
+
+Matching files will be available in the `/app` folder at runtime.
+Empty directories will be pruned.
 
 
 
