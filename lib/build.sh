@@ -63,16 +63,6 @@ distillery_mix_release_command() {
   set -o errexit    # always exit on error
 }
 
-output_line() {
-  local spacing="      "
-  echo "${spacing} $1"
-}
-
-output_section() {
-  local indentation="----->"
-  echo "${indentation} $1"
-}
-
 delete_broken_symlinks() {
   find "$1" -xtype l -delete > /dev/null
 }
