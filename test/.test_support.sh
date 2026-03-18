@@ -1,46 +1,13 @@
 #!/usr/bin/env bash
 
-
-ROOT_DIR=$(dirname "$SCRIPT_DIR")
-PASSED_ALL_TESTS=false
-
-# make a temp dir for test files/directories
-TEST_DIR=$(mktemp -d -t gigalixir-buildpack-phoenix-static_XXXXXXXXXX)
-ECHO_CONTENT=()
-cleanup() {
-  rm -rf ${TEST_DIR}
-  if $PASSED_ALL_TESTS; then
-    /bin/echo -e "  \e[0;32mTest Suite PASSED\e[0m"
-  else
-    /bin/echo -e "  \e[0;31mFAILED\e[0m"
-  fi
-  exit
-}
-trap cleanup EXIT INT TERM
+REPO_NAME="gigalixir-buildpack-releases"
+source "$(dirname "${BASH_SOURCE[0]}")/test_framework.sh"
 
 buildpack_dir=$(cd $(dirname $0)/.. && pwd)
+build_pack_dir=${ROOT_DIR}
 
 # create directories for test
 assets_dir=${TEST_DIR}/assets_dir
 build_dir=${TEST_DIR}/build_dir
 cache_dir=${TEST_DIR}/cache_dir
-build_pack_dir=${ROOT_DIR}
 mkdir -p ${assets_dir} ${build_dir} ${cache_dir}
-
-
-# overridden functions
-info() {
-  true
-}
-
-# helper functions
-test() {
-  failed=false
-  ECHO_CONTENT=()
-  /bin/echo "  TEST: $@"
-}
-
-suite() {
-  failed=false
-  /bin/echo -e "\e[0;36mSUITE: $@\e[0m"
-}
